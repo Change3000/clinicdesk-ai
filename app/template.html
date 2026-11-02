@@ -1,0 +1,415 @@
+<title>ClinicDesk AI</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<meta name="description" content="AI triage for GP clinic patient messages: emergency red-flags, intent classification, detail extraction and drafted replies. Runs entirely in the browser.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&family=IBM+Plex+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: a reception workstation. Summary strip on top, queue on the left, the selected message's
+   triage on the right; secondary views (try a message, batch, how it works) behind tabs. */
+:root {
+  --bg: #f4f6f4;            /* faint eucalyptus-tinted paper */
+  --surface: #ffffff;
+  --surface-2: #eaefec;
+  --ink: #17221d;
+  --muted: #56645d;
+  --line: #d5ddd8;
+  --accent: #1f6b52;        /* eucalyptus green */
+  --accent-ink: #ffffff;
+  --accent-soft: #dcebe4;
+  --urgent: #b42318; --urgent-soft: #fde8e6;
+  --clinical: #a15c00; --clinical-soft: #fdf0dc;
+  --review: #5b4bb7; --review-soft: #ece9fb;
+  --ok: #1f6b52;
+  --font-body: "Atkinson Hyperlegible", "Segoe UI", system-ui, -apple-system, sans-serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, monospace;
+  --r: 10px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #0f1613; --surface: #16201b; --surface-2: #1d2a24; --ink: #e6efe9; --muted: #9db0a6; --line: #2b3a33;
+    --accent: #5cc49b; --accent-ink: #0b1310; --accent-soft: #1d3a2f;
+    --urgent: #ff8a7d; --urgent-soft: #3a1714; --clinical: #f2b45b; --clinical-soft: #33240f; --review: #b2a8ff; --review-soft: #25213f; --ok: #5cc49b;
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #0f1613; --surface: #16201b; --surface-2: #1d2a24; --ink: #e6efe9; --muted: #9db0a6; --line: #2b3a33;
+  --accent: #5cc49b; --accent-ink: #0b1310; --accent-soft: #1d3a2f;
+  --urgent: #ff8a7d; --urgent-soft: #3a1714; --clinical: #f2b45b; --clinical-soft: #33240f; --review: #b2a8ff; --review-soft: #25213f; --ok: #5cc49b;
+  color-scheme: dark;
+}
+* { box-sizing: border-box; }
+body { background: var(--bg); color: var(--ink); font-family: var(--font-body); font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1180px; margin: 0 auto; padding-block: 20px 48px; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); }
+header.top { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 12px 24px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+.brand h1 { margin: 0; font-size: 1.6rem; letter-spacing: -0.01em; text-wrap: balance; }
+.brand h1 span { color: var(--accent); }
+.brand p { margin: 2px 0 0; color: var(--muted); max-width: 62ch; }
+.privacy { font-size: .82rem; color: var(--muted); display: flex; align-items: center; gap: 8px; }
+.dot { width: 8px; height: 8px; border-radius: 50%; background: var(--ok); flex: none; }
+nav.tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 16px 0; }
+nav.tabs button { font: inherit; border: 1px solid var(--line); background: var(--surface); color: var(--ink); padding: 7px 14px; border-radius: 999px; cursor: pointer; }
+nav.tabs button[aria-selected="true"] { background: var(--accent); color: var(--accent-ink); border-color: var(--accent); }
+button:focus-visible, textarea:focus-visible, input:focus-visible, .row:focus-visible { outline: 3px solid var(--accent); outline-offset: 2px; }
+.summary { display: grid; grid-template-columns: repeat(auto-fit, minmax(150px, 1fr)); gap: 10px; margin-bottom: 16px; }
+.stat { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 10px 14px; }
+.stat b { display: block; font-size: 1.5rem; font-variant-numeric: tabular-nums; }
+.stat small { color: var(--muted); }
+.stat.urgent b { color: var(--urgent); } .stat.clin b { color: var(--clinical); } .stat.rev b { color: var(--review); }
+.inbox { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1.15fr); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .inbox { grid-template-columns: 1fr; } }
+.list { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); overflow: hidden; }
+.filters { display: flex; flex-wrap: wrap; gap: 6px; padding: 10px; border-bottom: 1px solid var(--line); }
+.chip { font: inherit; font-size: .8rem; border: 1px solid var(--line); background: var(--surface-2); color: var(--ink); padding: 3px 10px; border-radius: 999px; cursor: pointer; }
+.chip[aria-pressed="true"] { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+.row { display: grid; grid-template-columns: 6px minmax(0, 1fr) auto; gap: 10px; padding: 10px 12px 10px 0; border-bottom: 1px solid var(--line); cursor: pointer; background: transparent; width: 100%; text-align: left; font: inherit; color: inherit; border-left: 0; border-right: 0; border-top: 0; }
+.row:last-child { border-bottom: 0; }
+.row[aria-current="true"] { background: var(--accent-soft); }
+.stripe { border-radius: 0 4px 4px 0; background: var(--line); }
+.stripe.urgent { background: var(--urgent); } .stripe.clinical_concern { background: var(--clinical); } .stripe.review { background: var(--review); }
+.row .body { display: block; min-width: 0; }
+.row .msg { display: block; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.row .meta { font-size: .78rem; color: var(--muted); display: flex; gap: 8px; flex-wrap: wrap; }
+.row time { font-family: var(--font-mono); font-size: .75rem; color: var(--muted); }
+.pill { display: inline-flex; align-items: center; gap: 4px; font-size: .75rem; font-weight: 700; padding: 1px 8px; border-radius: 999px; background: var(--surface-2); color: var(--muted); }
+.pill.urgent { background: var(--urgent-soft); color: var(--urgent); }
+.pill.clinical_concern { background: var(--clinical-soft); color: var(--clinical); }
+.pill.review { background: var(--review-soft); color: var(--review); }
+.pill.route { background: var(--accent-soft); color: var(--accent); }
+.panel { background: var(--surface); border: 1px solid var(--line); border-radius: var(--r); padding: 16px 18px; min-width: 0; }
+.panel h2 { margin: 0 0 4px; font-size: 1.05rem; }
+.panel h3 { margin: 18px 0 6px; font-size: .78rem; text-transform: uppercase; letter-spacing: .08em; color: var(--muted); }
+.quote { background: var(--surface-2); border-radius: 8px; padding: 10px 12px; font-style: italic; overflow-wrap: anywhere; }
+.alert { border: 2px solid var(--urgent); background: var(--urgent-soft); color: var(--ink); border-radius: 8px; padding: 12px 14px; }
+.alert strong { color: var(--urgent); }
+.steps { display: grid; gap: 8px; }
+.step { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 8px; }
+.step .n { width: 22px; height: 22px; border-radius: 50%; background: var(--accent-soft); color: var(--accent); font-size: .75rem; font-weight: 700; display: grid; place-items: center; }
+.bars { display: grid; gap: 4px; }
+.bar { display: grid; grid-template-columns: 150px minmax(0, 1fr) 44px; gap: 8px; align-items: center; font-size: .82rem; }
+.bar .track { height: 8px; background: var(--surface-2); border-radius: 4px; overflow: hidden; }
+.bar .fill { height: 100%; background: var(--muted); border-radius: 4px; }
+.bar.top .fill { background: var(--accent); }
+.bar span:last-child { font-family: var(--font-mono); text-align: right; font-variant-numeric: tabular-nums; }
+@media (max-width: 460px) { .bar { grid-template-columns: 110px minmax(0, 1fr) 40px; } }
+dl.kv { display: grid; grid-template-columns: max-content minmax(0, 1fr); gap: 4px 14px; margin: 0; }
+dl.kv dt { color: var(--muted); } dl.kv dd { margin: 0; overflow-wrap: anywhere; }
+.draft { border: 1px dashed var(--accent); border-radius: 8px; padding: 10px 12px; white-space: pre-wrap; }
+.btns { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 8px; }
+.btn { font: inherit; font-weight: 700; border: 1px solid var(--accent); background: var(--accent); color: var(--accent-ink); padding: 7px 14px; border-radius: 8px; cursor: pointer; }
+.btn.ghost { background: transparent; color: var(--accent); }
+.evidence { font-family: var(--font-mono); font-size: .78rem; color: var(--muted); }
+textarea { width: 100%; min-height: 110px; font: inherit; color: var(--ink); background: var(--surface); border: 1px solid var(--line); border-radius: 8px; padding: 10px; resize: vertical; }
+.examples { display: flex; flex-wrap: wrap; gap: 6px; margin: 8px 0 14px; }
+.two { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 16px; align-items: start; }
+@media (max-width: 860px) { .two { grid-template-columns: 1fr; } }
+.tablewrap { overflow-x: auto; border: 1px solid var(--line); border-radius: 8px; }
+table { border-collapse: collapse; width: 100%; font-size: .85rem; }
+th, td { text-align: left; padding: 6px 10px; border-bottom: 1px solid var(--line); vertical-align: top; }
+th { background: var(--surface-2); font-size: .75rem; text-transform: uppercase; letter-spacing: .06em; color: var(--muted); }
+td.num, th.num { text-align: right; font-family: var(--font-mono); font-variant-numeric: tabular-nums; }
+tr.chosen td { background: var(--accent-soft); font-weight: 700; }
+.prose { max-width: 70ch; }
+.prose p { margin: 6px 0; }
+.flow { display: flex; flex-wrap: wrap; gap: 8px; align-items: stretch; }
+.flow .box { flex: 1 1 160px; background: var(--surface-2); border-radius: 8px; padding: 10px 12px; font-size: .88rem; min-width: 0; }
+.flow .box b { display: block; }
+.note { font-size: .82rem; color: var(--muted); }
+footer { margin-top: 28px; padding-top: 12px; border-top: 1px solid var(--line); font-size: .82rem; color: var(--muted); }
+.copyok { font-size: .8rem; color: var(--ok); align-self: center; }
+@media (prefers-reduced-motion: no-preference) { .fill { transition: width .4s ease; } }
+</style>
+
+<div class="wrap">
+  <header class="top">
+    <div class="brand">
+      <h1>ClinicDesk <span>AI</span></h1>
+      <p>Triage for a GP clinic's patient inbox: flags emergencies, sorts every message to the right team, pulls out the key details and drafts a reply for staff to approve.</p>
+    </div>
+    <div class="privacy"><span class="dot" aria-hidden="true"></span>Runs entirely in your browser. No message leaves this device.</div>
+  </header>
+
+  <nav class="tabs" role="tablist" aria-label="Views">
+    <button role="tab" id="tab-inbox" aria-selected="true" data-view="inbox">Inbox</button>
+    <button role="tab" id="tab-try" aria-selected="false" data-view="try">Try a message</button>
+    <button role="tab" id="tab-batch" aria-selected="false" data-view="batch">Batch triage</button>
+    <button role="tab" id="tab-how" aria-selected="false" data-view="how">How it works</button>
+  </nav>
+
+  <section id="view-inbox" aria-labelledby="tab-inbox">
+    <div class="summary" id="summary"></div>
+    <div class="inbox">
+      <div class="list">
+        <div class="filters" id="filters" aria-label="Filter queue"></div>
+        <div id="rows"></div>
+      </div>
+      <div class="panel" id="detail" aria-live="polite"></div>
+    </div>
+    <p class="note">Sample inbox: 24 example messages written for this demo for a fictional clinic (Harbourside Family Practice). No real patient data.</p>
+  </section>
+
+  <section id="view-try" aria-labelledby="tab-try" hidden>
+    <div class="two">
+      <div class="panel">
+        <h2>Paste or type a patient message</h2>
+        <p class="note">Try SMS shorthand, typos, or something urgent. Results update as you type.</p>
+        <label for="tryText" class="note">Message</label>
+        <textarea id="tryText">hi pls send repeat script for my ventolin to my phone, its Priya Sharma 0412 345 678. thx</textarea>
+        <div class="examples" id="tryExamples"></div>
+      </div>
+      <div class="panel" id="tryOut" aria-live="polite"></div>
+    </div>
+  </section>
+
+  <section id="view-batch" aria-labelledby="tab-batch" hidden>
+    <div class="panel">
+      <h2>Batch triage</h2>
+      <p class="note">One message per line (for example, copied from an email export or SMS log). Or load a CSV with a column named <code>message</code>.</p>
+      <label for="batchText" class="note">Messages</label>
+      <textarea id="batchText" style="min-height:160px"></textarea>
+      <div class="btns">
+        <button class="btn" id="batchRun">Triage all</button>
+        <label class="btn ghost" for="csvFile" style="display:inline-flex;align-items:center">Load CSV</label>
+        <input type="file" id="csvFile" accept=".csv,text/csv" hidden>
+        <button class="btn ghost" id="batchCopy">Copy results as CSV</button>
+        <span class="copyok" id="batchMsg"></span>
+      </div>
+      <div class="tablewrap" style="margin-top:14px"><table id="batchTable"></table></div>
+    </div>
+  </section>
+
+  <section id="view-how" aria-labelledby="tab-how" hidden>
+    <div class="panel prose" style="max-width:none">
+      <h2>How it works</h2>
+      <p>Every message goes through four steps. Safety comes first and always wins over the model.</p>
+      <div class="flow" style="margin:12px 0 4px">
+        <div class="box"><b>1. Emergency check</b>Red-flag rules (chest pain, breathing, stroke signs, anaphylaxis, suicide risk, overdose, collapse, bleeding, seizures, unwell baby) plus a learned urgency model. Either one firing stops automation: no drafted reply, call the patient now.</div>
+        <div class="box"><b>2. Intent model</b>TF-IDF + logistic regression trained in Python (scikit-learn) on 315 example messages across 9 request types, exported to JSON and run here in JavaScript.</div>
+        <div class="box"><b>3. Detail extraction</b>Pulls out who it's for, doctor, medicines, tests, specialist, dates and times, phone number, and masks Medicare numbers.</div>
+        <div class="box"><b>4. Route and draft</b>Sends it to the right team with a suggested response time and drafts a reply. Staff approve every reply; low-confidence messages go to a person.</div>
+      </div>
+      <h3>Results</h3>
+      <div class="summary" id="metricTiles"></div>
+      <h3>What changed between versions</h3>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Version</th><th>What I changed</th><th class="num">Test set (90)</th><th class="num">Fresh holdout (27)</th></tr></thead>
+        <tbody>
+          <tr><td>v1</td><td>180 clean, formal example messages; raw words only</td><td class="num">91.1%</td><td class="num">77.8%</td></tr>
+          <tr class="chosen"><td>v2 (shipped)</td><td>Re-prompted for 135 messy SMS-style messages (typos, "appt", "script", "arvo") and added a shorthand dictionary</td><td class="num">95.6%</td><td class="num">88.9%</td></tr>
+          <tr><td>v3</td><td>Added word pairs (bigrams), balanced classes: vocabulary grew from 639 to 2,229 words with no gain</td><td class="num">95.6%</td><td class="num">88.9%</td></tr>
+          <tr><td>v4</td><td>Hand-written keyword boosts ("cancel", "fee", "certificate") tuned on the test set</td><td class="num">98.9%</td><td class="num">74.1%</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">v4 looked best on the test set but fell apart on 27 messages it had never seen: the boosts were fitted to the test set, so they did not generalise. I shipped v2. The fresh holdout set was written after all four versions were built and was used only to choose between them, never to tune one.</p>
+      <h3>Emergency detection: what each fix did on messages it had never seen</h3>
+      <div class="tablewrap"><table>
+        <thead><tr><th>Version</th><th>Approach</th><th class="num">New emergencies caught</th><th class="num">Routine messages flagged</th></tr></thead>
+        <tbody>
+          <tr><td>Rules v1</td><td>Keyword list written from the first 14 emergencies</td><td class="num">4 / 10</td><td class="num">3 / 10</td></tr>
+          <tr><td>Rules v2</td><td>Symptom patterns, no exclusions on symptoms, history-aware for "stroke" / "seizure"</td><td class="num">5 / 12</td><td class="num">1 / 12</td></tr>
+          <tr><td>Rules v3</td><td>Wider patterns (both word orders, "catch her breath", "better off without me")</td><td class="num">2 / 10</td><td class="num">1 / 6</td></tr>
+          <tr class="chosen"><td>Rules v3 + urgency model (shipped)</td><td>Added a learned model on words and word fragments ("breath", "bleed", "unresp"), trained on all earlier emergencies and 345 routine messages</td><td class="num">8 / 10</td><td class="num">1 / 6</td></tr>
+        </tbody>
+      </table></div>
+      <p class="note">Each row was scored on a fresh set written after that version was built. Keyword rules kept passing the messages they were written from and failing new wording, so I added the learned model. It still missed 2 of 10 (indirect suicide language and "nose pouring blood for 40 minutes"); both were sorted as clinical questions, so a nurse sees them, but a real deployment needs a stronger check, for example an LLM safety prompt, before going live. On the 117 routine test messages the combined check raised 1 false alarm (a toddler with a 38.2° fever).</p>
+      <h3>Per-category scores (test set)</h3>
+      <div class="tablewrap"><table id="perClass"></table></div>
+      <h3>Limits</h3>
+      <p>Trained on synthetic messages written for this project, so accuracy on a real clinic's inbox will be lower until it is retrained on de-identified real messages. English only. It is an admin tool, not a medical device: it never gives clinical advice, and every drafted reply needs a staff member to approve it. The emergency check prefers false alarms to misses, and it still misses some wording, so it supports reception staff rather than replacing them.</p>
+    </div>
+  </section>
+
+  <footer>Prototype by Vishwa Singh for the AI Growth &amp; Automation Associate assessment, built with Claude (Anthropic) as the AI pair-programmer. Fictional clinic and example messages; phone numbers are from Australia's range reserved for fiction. Source: model training in Python (scikit-learn), app in plain JavaScript.</footer>
+</div>
+
+<script type="application/json" id="model-json">/*MODEL_JSON*/</script>
+<script type="application/json" id="rules-json">/*RULES_JSON*/</script>
+<script type="application/json" id="urgency-json">/*URGENCY_JSON*/</script>
+<script>/*ENGINE_JS*/</script>
+<script>
+(function () {
+  "use strict";
+  const model = JSON.parse(document.getElementById("model-json").textContent);
+  const rules = JSON.parse(document.getElementById("rules-json").textContent);
+  const urgencyModel = JSON.parse(document.getElementById("urgency-json").textContent);
+  const triage = ClinicDesk.createEngine(model, rules, urgencyModel);
+  const R = ClinicDesk.ROUTES;
+  const esc = s => String(s).replace(/[&<>"']/g, c => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" }[c]));
+  const pct = p => (p * 100).toFixed(0) + "%";
+  const LABEL = Object.fromEntries(Object.entries(R).map(([k, v]) => [k, v.name]));
+
+  const SAMPLE = [
+    ["07:42", "hi pls send repeat script for my ventolin to my phone, its Priya Sharma 0412 345 678"],
+    ["07:51", "my dad cant breathe properly and his lips look blue, what do we do"],
+    ["07:58", "need a sick cert for work for monday and tuesday, had gastro"],
+    ["08:03", "can i get in to see dr nguyen tmrw arvo? my knee is still sore"],
+    ["08:10", "Hi, has the doctor looked at my blood test from last Tuesday yet?"],
+    ["08:12", "cant make my 10.30 today sorry, can we move it to friday"],
+    ["08:20", "do you bulk bill kids under 16?"],
+    ["08:24", "my toddler has a temp of 38.4 since last night but is still drinking, should we come in"],
+    ["08:31", "need a new referral for my cardiologist, the old one expired"],
+    ["08:35", "what time do you close on saturday"],
+    ["08:40", "I was charged a gap fee yesterday but I thought telehealth was bulk billed"],
+    ["08:44", "missed 2 days of my pill, what should i do"],
+    ["08:52", "Could Dr Patel send my e-script for metformin, I have 3 days left"],
+    ["09:01", "can I get my chest x-ray results please"],
+    ["09:05", "Please cancel my son's appointment on Thursday, he's at school camp"],
+    ["09:11", "is there parking near the clinic? first visit next week"],
+    ["09:14", "I don't want to be here anymore and I've been thinking about ending my life"],
+    ["09:20", "need referal to physio for my shoulder under my care plan"],
+    ["09:26", "hi can my mum get a home visit, she's 84 and can't drive"],
+    ["09:30", "the stitches from my mole removal look red and a bit puffy"],
+    ["09:37", "my workplace needs a certificate of capacity for workcover"],
+    ["09:41", "any news on my ultrasound from monday?"],
+    ["09:48", "Good morning, I'd like to book a skin check with a female GP"],
+    ["09:55", "Can I get a receipt for my last visit for my Medicare claim? DOB 12/03/1979"],
+  ];
+  const items = SAMPLE.map(([t, m], i) => ({ id: i, time: t, r: triage(m) }));
+  const sortKey = it => it.r.urgent ? 0 : it.r.lowConfidence ? 1.5 : it.r.route.priority;
+  items.sort((a, b) => sortKey(a) - sortKey(b) || a.time.localeCompare(b.time));
+
+  function tagFor(r) {
+    if (r.urgent) return ["urgent", "Emergency"];
+    if (r.lowConfidence) return ["review", "Check: " + LABEL[r.intent] + "?"];
+    if (r.intent === "clinical_concern") return ["clinical_concern", "Nurse callback"];
+    return ["route", LABEL[r.intent]];
+  }
+  function stripeFor(r) { return r.urgent ? "urgent" : r.lowConfidence ? "review" : r.intent; }
+
+  // ---------- summary ----------
+  function summary(list) {
+    const urgent = list.filter(i => i.r.urgent).length;
+    const clin = list.filter(i => !i.r.urgent && i.r.intent === "clinical_concern").length;
+    const review = list.filter(i => i.r.lowConfidence).length;
+    const drafted = list.filter(i => i.r.reply && !i.r.lowConfidence && i.r.intent !== "clinical_concern").length;
+    document.getElementById("summary").innerHTML = [
+      ["", list.length, "messages this morning"],
+      ["urgent", urgent, "possible emergencies, call now"],
+      ["clin", clin, "clinical questions for the nurse"],
+      ["rev", review, "unsure, a person checks"],
+      ["", drafted, "routine, reply drafted"],
+    ].map(([c, n, l]) => `<div class="stat ${c}"><b>${n}</b><small>${l}</small></div>`).join("");
+  }
+
+  // ---------- filters + rows ----------
+  let filter = "all", current = items[0].id;
+  function renderFilters() {
+    const cats = [["all", "All"], ["urgent", "Emergency"], ["review", "Needs a check"], ...Object.keys(R).filter(k => k !== "urgent").map(k => [k, R[k].name])];
+    const counts = k => k === "all" ? items.length : k === "urgent" ? items.filter(i => i.r.urgent).length : k === "review" ? items.filter(i => i.r.lowConfidence).length : items.filter(i => !i.r.urgent && i.r.intent === k).length;
+    document.getElementById("filters").innerHTML = cats.filter(([k]) => counts(k) > 0).map(([k, l]) => `<button class="chip" aria-pressed="${filter === k}" data-f="${k}">${esc(l)} ${counts(k)}</button>`).join("");
+  }
+  function visible() {
+    return items.filter(i => filter === "all" || (filter === "urgent" ? i.r.urgent : filter === "review" ? i.r.lowConfidence : (!i.r.urgent && i.r.intent === filter)));
+  }
+  function renderRows() {
+    document.getElementById("rows").innerHTML = visible().map(i => {
+      const [cls, txt] = tagFor(i.r);
+      return `<button class="row" data-id="${i.id}" aria-current="${i.id === current}">
+        <span class="stripe ${stripeFor(i.r)}"></span>
+        <span class="body"><span class="msg">${esc(i.r.text)}</span><span class="meta"><span class="pill ${cls}">${esc(txt)}</span><span>${esc(i.r.route.team)} · ${esc(i.r.route.sla)}</span></span></span>
+        <time>${i.time}</time></button>`;
+    }).join("");
+  }
+
+  // ---------- detail ----------
+  function detailHTML(r, opts = {}) {
+    const d = r.details;
+    const fields = [["For", d.forWhom ? "Patient's " + d.forWhom : ""], ["Name", d.name], ["Phone", d.phone], ["Date of birth", d.dob], ["Medicare no.", d.medicare],
+      ["Doctor", d.doctor], ["Medicines", d.meds], ["Tests", d.tests], ["Specialist", d.specialist], ["When", d.when]].filter(([, v]) => v);
+    let h = "";
+    if (!opts.noQuote) h += `<div class="quote">“${esc(r.text)}”</div>`;
+    if (r.urgent) {
+      h += `<h3>Step 1 · Emergency check</h3><div class="alert"><strong>${esc(r.safetyAdvice.title)}</strong><br>Why: ${r.flags.map(f => esc(f.label) + (f.match ? " (“" + esc(f.match) + "”)" : "")).join("; ")}<br><b>Staff:</b> ${esc(r.safetyAdvice.staff_action)}<br><b>Tell the patient:</b> ${esc(r.safetyAdvice.patient_advice)}</div>`;
+    } else {
+      h += `<h3>Step 1 · Emergency check</h3><p>No emergency signs found (urgency score ${pct(r.urgencyScore)}).</p>`;
+    }
+    const [cls, txt] = tagFor(r);
+    h += `<h3>Step 2 · What they're asking for</h3><p><span class="pill ${cls}">${esc(txt)}</span> <span class="pill route">${esc(r.route.team)} · ${esc(r.route.sla)}</span></p>`;
+    if (r.urgent) {
+      h += `<p class="note">Category for after the call: ${esc(LABEL[r.intent])}.</p>`;
+    } else {
+      if (r.lowConfidence) h += `<p class="note">The model isn't sure (its top two answers are close), so a person confirms before anything is sent.</p>`;
+      if (r.alsoMentions && !r.lowConfidence) h += `<p class="note">Also mentions: ${esc(LABEL[r.alsoMentions])}</p>`;
+      const mx = r.probs[0].p;
+      h += `<div class="bars">` + r.probs.slice(0, 4).map((p, i) => `<div class="bar ${i === 0 ? "top" : ""}"><span>${esc(LABEL[p.label])}</span><span class="track"><span class="fill" style="width:${(p.p / mx * 100).toFixed(0)}%;display:block"></span></span><span>${pct(p.p)}</span></div>`).join("") + `</div>`;
+      if (r.evidence.length) h += `<p class="evidence">key words: ${r.evidence.map(esc).join(" · ")}</p>`;
+    }
+    h += `<h3>Step 3 · Details found</h3>` + (fields.length ? `<dl class="kv">${fields.map(([k, v]) => `<dt>${k}</dt><dd>${esc(v)}</dd>`).join("")}</dl>` : `<p class="note">No names, dates, medicines or numbers found.</p>`);
+    h += `<h3>Step 4 · Drafted reply</h3>`;
+    if (r.urgent) h += `<p>No automatic reply. Phone the patient now.</p>`;
+    else h += `<div class="draft" id="draftText">${esc(r.reply)}</div><div class="btns"><button class="btn" data-copy>Copy reply</button><span class="copyok" data-copyok></span></div><p class="note">Draft only: a staff member reviews and sends it.</p>`;
+    return h;
+  }
+  function renderDetail() {
+    const it = items.find(i => i.id === current);
+    document.getElementById("detail").innerHTML = `<h2>Message at ${it.time}</h2>` + detailHTML(it.r);
+  }
+
+  document.getElementById("filters").addEventListener("click", e => { const b = e.target.closest("[data-f]"); if (!b) return; filter = b.dataset.f; const v = visible(); if (v.length && !v.some(i => i.id === current)) current = v[0].id; renderFilters(); renderRows(); renderDetail(); });
+  document.getElementById("rows").addEventListener("click", e => { const b = e.target.closest("[data-id]"); if (!b) return; current = +b.dataset.id; renderRows(); renderDetail(); });
+  document.addEventListener("click", async e => {
+    const b = e.target.closest("[data-copy]"); if (!b) return;
+    const panel = b.closest(".panel"); const t = panel.querySelector(".draft").textContent; const ok = panel.querySelector("[data-copyok]");
+    try { await navigator.clipboard.writeText(t); ok.textContent = "Copied"; } catch (_) { const rng = document.createRange(); rng.selectNodeContents(panel.querySelector(".draft")); const s = getSelection(); s.removeAllRanges(); s.addRange(rng); ok.textContent = "Selected: press Ctrl/Cmd+C"; }
+  });
+
+  // ---------- tabs ----------
+  document.querySelector("nav.tabs").addEventListener("click", e => {
+    const b = e.target.closest("[data-view]"); if (!b) return;
+    document.querySelectorAll("nav.tabs [data-view]").forEach(x => x.setAttribute("aria-selected", x === b));
+    ["inbox", "try", "batch", "how"].forEach(v => document.getElementById("view-" + v).hidden = v !== b.dataset.view);
+  });
+
+  // ---------- try ----------
+  const EX = ["my mum's face is drooping on one side and her speech is slurred", "r my bloods back yet", "need referal to skin specialist", "Can my 2pm on the 14th be changed to the 16th?", "is it ok to drink on these antibiotics", "whats the gap for a long appt"];
+  document.getElementById("tryExamples").innerHTML = EX.map(x => `<button class="chip" data-ex="${esc(x)}">${esc(x.length > 38 ? x.slice(0, 36) + "…" : x)}</button>`).join("");
+  const tryText = document.getElementById("tryText");
+  function runTry() { const v = tryText.value.trim(); document.getElementById("tryOut").innerHTML = v ? `<h2>Triage</h2>` + detailHTML(triage(v), { noQuote: true }) : `<p class="note">Type a message to see how it would be triaged.</p>`; }
+  tryText.addEventListener("input", runTry);
+  document.getElementById("tryExamples").addEventListener("click", e => { const b = e.target.closest("[data-ex]"); if (!b) return; tryText.value = b.dataset.ex; runTry(); });
+
+  // ---------- batch ----------
+  const batchText = document.getElementById("batchText");
+  batchText.value = SAMPLE.slice(0, 10).map(x => x[1]).join("\n");
+  let batchRows = [];
+  function runBatch() {
+    const lines = batchText.value.split(/\n+/).map(s => s.trim()).filter(Boolean).slice(0, 500);
+    batchRows = lines.map(m => triage(m));
+    const head = `<thead><tr><th>#</th><th>Message</th><th>Result</th><th>Team · response time</th><th>Details</th></tr></thead>`;
+    const body = batchRows.map((r, i) => { const [cls, txt] = tagFor(r); const d = r.details; const det = [d.meds, d.tests, d.specialist, d.doctor, d.when, d.phone].filter(Boolean).join("; ");
+      return `<tr><td class="num">${i + 1}</td><td>${esc(r.text)}</td><td><span class="pill ${cls}">${esc(txt)}</span></td><td>${esc(r.route.team)} · ${esc(r.route.sla)}</td><td>${esc(det)}</td></tr>`; }).join("");
+    document.getElementById("batchTable").innerHTML = head + `<tbody>${body}</tbody>`;
+    document.getElementById("batchMsg").textContent = `${batchRows.length} triaged · ${batchRows.filter(r => r.urgent).length} emergency · ${batchRows.filter(r => r.lowConfidence).length} need a check`;
+  }
+  function csvCell(s) { s = String(s ?? ""); return /[",\n]/.test(s) ? '"' + s.replace(/"/g, '""') + '"' : s; }
+  document.getElementById("batchRun").addEventListener("click", runBatch);
+  document.getElementById("batchCopy").addEventListener("click", async () => {
+    if (!batchRows.length) runBatch();
+    const out = [["message", "emergency", "category", "needs_check", "team", "response_time", "medicines", "tests", "doctor", "when", "phone", "draft_reply"].join(",")]
+      .concat(batchRows.map(r => [r.text, r.urgent ? "yes" : "no", LABEL[r.intent], r.lowConfidence ? "yes" : "no", r.route.team, r.route.sla, r.details.meds, r.details.tests, r.details.doctor, r.details.when, r.details.phone, r.reply || ""].map(csvCell).join(","))).join("\n");
+    const msg = document.getElementById("batchMsg");
+    try { await navigator.clipboard.writeText(out); msg.textContent = "CSV copied: paste into Excel or Google Sheets"; } catch (_) { batchText.value = out; batchText.select(); msg.textContent = "CSV placed in the box above: press Ctrl/Cmd+C"; }
+  });
+  document.getElementById("csvFile").addEventListener("change", e => {
+    const f = e.target.files[0]; if (!f) return; const rd = new FileReader();
+    rd.onload = () => { const rows = rd.result.split(/\r?\n/); const hdr = rows[0].split(",").map(s => s.trim().toLowerCase().replace(/"/g, "")); const ix = Math.max(0, hdr.indexOf("message"));
+      batchText.value = rows.slice(1).map(l => { const m = l.match(/("([^"]|"")*"|[^,]*)(,|$)/g) || []; return (m[ix] || "").replace(/,$/, "").replace(/^"|"$/g, "").replace(/""/g, '"'); }).filter(Boolean).join("\n"); runBatch(); };
+    rd.readAsText(f);
+  });
+
+  // ---------- how it works ----------
+  const m = model.metrics;
+  document.getElementById("metricTiles").innerHTML = [
+    ["", (m.accuracy * 100).toFixed(1) + "%", `request-type accuracy on the ${m.test_size}-message test set`],
+    ["", (m.holdout_accuracy * 100).toFixed(1) + "%", `on ${m.holdout_size} messages written after the model was built`],
+    ["urgent", "8 / 10", "emergencies caught in never-seen wording"],
+    ["", "1 / 117", "routine messages wrongly flagged as emergencies"],
+    ["rev", "98%", "accuracy on the 99 of 117 test messages it routes by itself (97 right); 17 unsure ones go to a person"],
+  ].map(([c, n, l]) => `<div class="stat ${c}"><b>${n}</b><small>${l}</small></div>`).join("");
+  document.getElementById("perClass").innerHTML = `<thead><tr><th>Category</th><th class="num">Precision</th><th class="num">Recall</th><th class="num">F1</th></tr></thead><tbody>` +
+    Object.entries(m.per_class).map(([k, v]) => `<tr><td>${esc(LABEL[k])}</td><td class="num">${v.precision.toFixed(2)}</td><td class="num">${v.recall.toFixed(2)}</td><td class="num">${v.f1.toFixed(2)}</td></tr>`).join("") + `</tbody>`;
+
+  summary(items); renderFilters(); renderRows(); renderDetail(); runTry(); runBatch();
+})();
+</script>
