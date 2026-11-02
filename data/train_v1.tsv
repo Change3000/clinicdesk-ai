@@ -1,0 +1,181 @@
+label	message
+book_appointment	Hi, I would like to book an appointment with a GP this week please.
+book_appointment	Could I please make an appointment to see Dr Patel on Thursday afternoon?
+book_appointment	I need to see a doctor about my ongoing back pain. When is the next available appointment?
+book_appointment	Hello, do you have any appointments available tomorrow morning?
+book_appointment	I'd like to book a long consultation for a skin check.
+book_appointment	Can I book my son in for his 4 year old immunisations?
+book_appointment	Please book me in for a flu vaccination next week.
+book_appointment	I am a new patient and would like to make my first appointment.
+book_appointment	Is it possible to book a telehealth appointment for Monday?
+book_appointment	Could you schedule an appointment for my mother with Dr Nguyen?
+book_appointment	I would like an appointment for a general check-up and blood pressure review.
+book_appointment	Do you have a female doctor available for a women's health appointment?
+book_appointment	Can I get an appointment on Saturday morning?
+book_appointment	I'd like to see a doctor about a rash on my arm, what times are free?
+book_appointment	Please can I book a mental health care plan appointment.
+book_appointment	I need an appointment for a travel vaccination consultation before my trip.
+book_appointment	Could I book a 15 minute appointment after 4pm any day this week?
+book_appointment	I would like to arrange a diabetes review appointment with my regular GP.
+book_appointment	Hi, I need to see someone about my sore throat, any appointments today?
+book_appointment	Can you book me with the practice nurse for a wound dressing?
+change_appointment	I need to cancel my appointment tomorrow at 10am.
+change_appointment	Could I please reschedule my appointment with Dr Smith to next week?
+change_appointment	Sorry, I can't make it to my 3pm appointment today, please cancel it.
+change_appointment	Can I move my Friday appointment to Monday instead?
+change_appointment	I would like to change my telehealth appointment to a face to face visit.
+change_appointment	Please cancel my son's appointment on Wednesday, he is feeling better.
+change_appointment	Is it possible to push my appointment back by an hour?
+change_appointment	I booked online for the wrong day, can you change it to Thursday?
+change_appointment	I need to postpone my skin check appointment until next month.
+change_appointment	Please cancel all my appointments for next week as I will be away.
+change_appointment	Can I swap my appointment to an earlier time on the same day?
+change_appointment	I have to cancel my flu shot booking, I will rebook later.
+change_appointment	Could you move my appointment from Dr Lee to Dr Patel?
+change_appointment	My appointment clashes with work, can we reschedule to the afternoon?
+change_appointment	I won't be able to attend tomorrow's appointment, sorry for the short notice.
+change_appointment	Please confirm my appointment has been cancelled.
+change_appointment	Can I change my booking from 9am to 11am on Tuesday?
+change_appointment	I need to reschedule my mother's appointment because she is unwell.
+change_appointment	Please cancel my appointment, I have already seen another doctor.
+change_appointment	Could my blood pressure review be moved to the following week?
+repeat_prescription	Hi, I need a repeat prescription for my blood pressure medication.
+repeat_prescription	Could the doctor please send a new script for my asthma inhaler?
+repeat_prescription	I have run out of repeats for my cholesterol tablets, can I get a new prescription?
+repeat_prescription	Please can I have an electronic script for my thyroid medication sent to my phone.
+repeat_prescription	I need my contraceptive pill prescription renewed.
+repeat_prescription	Can Dr Patel send my repeat script to the chemist on Main Street?
+repeat_prescription	My regular medication script has expired, how do I get a new one?
+repeat_prescription	I'd like to request a repeat of my diabetes medication.
+repeat_prescription	Could I please get a prescription renewal for my antidepressants?
+repeat_prescription	I need a new script for my reflux tablets, I have none left.
+repeat_prescription	Please send my e-script for metformin to my mobile.
+repeat_prescription	Can I get my usual medications prescribed without coming in?
+repeat_prescription	I'm going overseas and need extra scripts for my regular medicines.
+repeat_prescription	The pharmacy said I need a new prescription for my insulin.
+repeat_prescription	Could you organise a script for my son's ADHD medication?
+repeat_prescription	I would like to renew my prescription for my migraine medication.
+repeat_prescription	My doctor said I could request repeat scripts by email, can I get one for my blood thinner?
+repeat_prescription	Please renew my prescription for atorvastatin.
+repeat_prescription	I need a script for my eczema cream refilled.
+repeat_prescription	Can the GP write a repeat prescription for my epilepsy medication?
+test_results	Hi, are my blood test results back yet?
+test_results	I had a pathology test last week, could the doctor let me know the results?
+test_results	Has the doctor reviewed my X-ray results?
+test_results	I'm waiting on my ultrasound results, can someone call me?
+test_results	Could you tell me if my cholesterol test came back normal?
+test_results	I got a text saying my results are in, do I need to book an appointment?
+test_results	Can I get a copy of my recent blood test results emailed to me?
+test_results	My specialist needs my latest test results, can you send them?
+test_results	I had a urine test on Monday, are the results available?
+test_results	Have my skin biopsy results come through?
+test_results	Could the doctor check my iron levels from the blood test and let me know?
+test_results	I'm anxious about my scan results, when will they be ready?
+test_results	Please let me know the results of my COVID test.
+test_results	Are my mother's test results back from the lab?
+test_results	I had an ECG done last week, has the doctor looked at it?
+test_results	Can I find out my pap smear results?
+test_results	Did my vitamin D test come back?
+test_results	The lab said the results were sent to the clinic, can someone review them?
+test_results	I need to know my HbA1c result before my specialist appointment.
+test_results	Could you please follow up my CT scan results?
+referral	I need a referral to see a dermatologist.
+referral	Could the doctor write a referral letter to a physiotherapist for me?
+referral	My referral to the cardiologist has expired, can I get a new one?
+referral	Can I get a referral for a psychologist under a mental health plan?
+referral	I'd like a referral to an orthopaedic surgeon for my knee.
+referral	The specialist's office says they need an updated referral from my GP.
+referral	Please can I get a referral to the eye specialist.
+referral	Can you send a referral to the hospital for my son's tonsils?
+referral	I need a referral for an MRI scan of my shoulder.
+referral	Could my GP refer me to a dietitian?
+referral	My indefinite referral needs renewing for the endocrinologist.
+referral	Can I get a referral to a gynaecologist?
+referral	Can you fax my referral to the specialist clinic?
+referral	I need a new referral for my ENT specialist appointment next month.
+referral	Could the doctor refer me for a sleep study?
+referral	I'd like to be referred to a podiatrist for my foot pain.
+referral	My physio needs a referral for the chronic disease management plan.
+referral	Please send a referral for a mammogram.
+referral	I require a referral to a neurologist for my headaches.
+referral	Can I get a referral for an allergy specialist?
+medical_certificate	I need a medical certificate for work, I was sick yesterday.
+medical_certificate	Can I get a sick certificate for the last two days?
+medical_certificate	My employer is asking for a medical certificate, how can I get one?
+medical_certificate	Could I please get a carer's certificate as I looked after my sick child?
+medical_certificate	I need a certificate for university to cover my missed exam.
+medical_certificate	Can the doctor provide a fitness for work certificate?
+medical_certificate	I need a medical certificate to extend my sick leave.
+medical_certificate	Can I get a certificate saying I'm fit to return to work?
+medical_certificate	My school needs a medical certificate for my daughter's absence.
+medical_certificate	I require a medical clearance letter for my gym membership.
+medical_certificate	Can I get a medical certificate through a telehealth consult?
+medical_certificate	I need a doctor's note for my absence from work on Friday.
+medical_certificate	Please could I have a medical certificate for jury duty exemption.
+medical_certificate	Can I get a WorkCover certificate of capacity?
+medical_certificate	My boss needs a sick note, can I get one today?
+medical_certificate	I need a medical certificate for cancelling my flight.
+medical_certificate	Could the doctor write a letter stating I can't do physical work?
+medical_certificate	I need a medical form completed for my driver's licence.
+medical_certificate	Can I get a certificate for being unwell this week?
+medical_certificate	I need a pre-employment medical certificate.
+billing_medicare	How much does a standard consultation cost?
+billing_medicare	Do you bulk bill for pensioners?
+billing_medicare	I was charged twice for my appointment, can you check?
+billing_medicare	Can I get a receipt for my last visit for my Medicare claim?
+billing_medicare	Is the telehealth appointment bulk billed?
+billing_medicare	My Medicare rebate hasn't come through, can you help?
+billing_medicare	What is the gap fee for a long consultation?
+billing_medicare	Do you accept private health insurance for the skin check?
+billing_medicare	I have a new Medicare card, can you update my details?
+billing_medicare	Can I pay my outstanding invoice online?
+billing_medicare	Do you bulk bill children under 16?
+billing_medicare	How much is the out of pocket cost for a health assessment?
+billing_medicare	I need an itemised invoice for my WorkCover claim.
+billing_medicare	Can I pay by card at the clinic?
+billing_medicare	Why was I charged a fee when I thought it was bulk billed?
+billing_medicare	I don't have a Medicare card, how much will an appointment cost?
+billing_medicare	Can you send me a tax invoice for my visits this year?
+billing_medicare	Is there a cancellation fee if I miss my appointment?
+billing_medicare	My DVA card details need to be updated on my file.
+billing_medicare	Can I get a refund for the appointment I cancelled?
+general_enquiry	What are your opening hours on weekends?
+general_enquiry	Are you accepting new patients?
+general_enquiry	Is there parking available at the clinic?
+general_enquiry	What is the address of your practice?
+general_enquiry	Do you have any doctors who speak Hindi?
+general_enquiry	Are you open on public holidays?
+general_enquiry	Do you offer telehealth consultations?
+general_enquiry	How do I update my address and phone number on my file?
+general_enquiry	Is the clinic wheelchair accessible?
+general_enquiry	Do I need to wear a mask when I visit?
+general_enquiry	Can I transfer my medical records from my previous GP?
+general_enquiry	What services does your practice nurse offer?
+general_enquiry	Do you have an app for online bookings?
+general_enquiry	How early should I arrive for my first appointment?
+general_enquiry	Do you do home visits for elderly patients?
+general_enquiry	Which doctors are working this Friday?
+general_enquiry	Can I bring my own interpreter to the appointment?
+general_enquiry	Do you have a pathology collection centre on site?
+general_enquiry	What is your fax number for sending documents?
+general_enquiry	Is Dr Patel still working at the practice?
+clinical_concern	I've had a mild cough for a week, should I be worried?
+clinical_concern	My son has had a low fever since yesterday, what should I do?
+clinical_concern	I started the new tablets and I feel a bit dizzy, is that normal?
+clinical_concern	I have a rash after starting antibiotics, should I keep taking them?
+clinical_concern	My blood pressure reading at home was a bit high today, what should I do?
+clinical_concern	I've had diarrhoea for two days, do I need to see a doctor?
+clinical_concern	My wound from the procedure looks a bit red, is that ok?
+clinical_concern	I've been feeling very tired lately, could it be my thyroid?
+clinical_concern	Is it safe to take ibuprofen with my blood pressure medication?
+clinical_concern	My daughter has ear pain, can I give her paracetamol?
+clinical_concern	I forgot to take my medication yesterday, should I take two today?
+clinical_concern	I have a headache that won't go away after three days.
+clinical_concern	My sugar levels have been a bit higher than usual this week.
+clinical_concern	I think I have a urinary tract infection, what should I do?
+clinical_concern	My knee is swollen after a fall last week but I can walk.
+clinical_concern	I've had heartburn every night, is that something to worry about?
+clinical_concern	I'm having side effects from my new antidepressant, feeling nauseous.
+clinical_concern	My baby has a blocked nose and is feeding a little less.
+clinical_concern	Can I get the flu vaccine if I have a cold?
+clinical_concern	I noticed a new mole that has changed colour.

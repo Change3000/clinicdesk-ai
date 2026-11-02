@@ -1,0 +1,16 @@
+{
+  "appt": "appointment", "appts": "appointments", "apt": "appointment", "booking": "booking",
+  "dr": "doctor", "drs": "doctors", "doc": "doctor", "gp": "doctor",
+  "pls": "please", "plz": "please", "plse": "please", "thx": "thanks",
+  "u": "you", "ur": "your", "r": "are", "w": "with", "re": "about",
+  "tmrw": "tomorrow", "tmr": "tomorrow", "tomoz": "tomorrow", "2moro": "tomorrow",
+  "wk": "week", "wks": "weeks", "arvo": "afternoon", "thurs": "thursday", "tues": "tuesday", "wed": "wednesday", "fri": "friday", "mon": "monday",
+  "rx": "prescription", "presciption": "prescription", "prescripton": "prescription", "perscription": "prescription",
+  "script": "prescription", "scripts": "prescriptions", "escript": "prescription", "meds": "medication",
+  "cert": "certificate", "certs": "certificates", "med": "medical",
+  "referal": "referral", "refferal": "referral", "ref": "referral",
+  "bloods": "blood test", "bloodwork": "blood test", "xray": "x-ray",
+  "bp": "blood pressure", "temp": "temperature",
+  "consult": "consultation", "u/s": "ultrasound",
+  "cant": "cannot", "wont": "will not", "dont": "do not", "im": "i am", "ive": "i have", "its": "it is"
+}

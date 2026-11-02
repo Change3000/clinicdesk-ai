@@ -1,0 +1,23 @@
+expected	message
+urgent	I have crushing chest pain going down my left arm
+urgent	my dad cant breathe properly and his lips are blue
+urgent	my mum's face is drooping on one side and her speech is slurred
+urgent	having a severe allergic reaction, my throat is swelling up
+urgent	I don't want to live anymore and I have a plan to end my life
+urgent	my son took a whole packet of panadol, what do I do
+urgent	my husband collapsed and is unconscious
+urgent	there is a lot of bleeding that won't stop after a cut
+urgent	my baby is floppy and not responding properly
+urgent	having a seizure right now please help
+urgent	chest pain and short of breath since an hour
+urgent	i think im having a heart attack
+urgent	been thinking about killing myself
+urgent	wife fainted and hit her head, now confused and vomiting
+not_urgent	can I get my chest x-ray results
+not_urgent	need a repeat script for my chest infection antibiotics
+not_urgent	need referral to cardiologist for my yearly heart check
+not_urgent	appointment for my mental health care plan review
+not_urgent	my asthma inhaler script has run out
+not_urgent	can I book a skin check, I had some bleeding from a mole last month that has stopped
+not_urgent	how much is a consult for a allergy test
+not_urgent	I need a medical certificate, I fainted at work last week but I'm fine now

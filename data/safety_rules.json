@@ -1,0 +1,89 @@
+{
+ "note": "Red-flag rules run BEFORE the classifier. Any match = urgent: no auto-reply, advise 000 / crisis line, clinician alerted. Symptom rules have no exclusions; only bare condition names (e.g. 'stroke', 'seizure') ignore clear history/admin context. Deliberately over-sensitive: a false alarm costs a phone call, a miss can cost a life.",
+ "rules": [
+  {
+   "id": "cardiac",
+   "label": "Possible heart attack",
+   "pattern": "chest.{0,30}(pain|hurt|tight|pressure|heavy|crushing|squeez|ache)|(pain|hurt|tight|pressure|heavy|crushing|squeez|ache).{0,30}chest|heart attack|pain .{0,15}down (my|his|her|their) (left )?arm|(jaw|arm).{0,20}(pain|ache).{0,40}(sweat|chest)|grey.{0,15}sweat",
+   "exclude": ""
+  },
+  {
+   "id": "breathing",
+   "label": "Breathing difficulty",
+   "pattern": "(can'?t|cannot|can not|struggling to|hard to|trouble|difficulty|unable to) (breath|catch (his|her|my|their) breath)|catch (his|her|my|their) breath|(isn'?t|is not|not|stopped) breathing|short(ness)? of breath|breathless|gasping|wheez.{0,15}(bad|severe|can'?t|really)|blue lips|lips (are |look |turning )?blue|turning blue|choking",
+   "exclude": ""
+  },
+  {
+   "id": "stroke_signs",
+   "label": "Possible stroke (FAST signs)",
+   "pattern": "face (is )?droop|drooping|slurr|words (are )?(jumbled|mixed up|not making sense)|speech .{0,20}(weird|strange|slurr|jumbled|gone|funny)|can'?t (lift|move|feel) (his|her|my|their|the) (arm|leg|face|right|left)|sudden(ly)?.{0,30}(weak|numb|confus|speech|vision|can'?t (speak|talk|see|walk|lift|move))|(weak|numb|confus|speech|vision).{0,30}sudden",
+   "exclude": ""
+  },
+  {
+   "id": "stroke_word",
+   "label": "Possible stroke",
+   "pattern": "\\bstroke\\b",
+   "exclude": "stroke (last|this past|earlier this) (year|month)|stroke (\\d+|a few|two|three|several) (years|months) ago|history of (a )?stroke|stroke (risk|check|prevention|rehab|recovery)|(rehab|recovery|physio).{0,20}stroke|stroke.{0,20}(rehab|recovery|physio)"
+  },
+  {
+   "id": "anaphylaxis",
+   "label": "Severe allergic reaction",
+   "pattern": "(lips|tongue|throat|face|mouth).{0,25}swell|swell.{0,25}(lips|tongue|throat)|throat .{0,10}(closing|tight)|severe allergic|used (my|his|her|the) epi ?pen|anaphylactic (reaction|shock)",
+   "exclude": ""
+  },
+  {
+   "id": "anaphylaxis_word",
+   "label": "Possible anaphylaxis",
+   "pattern": "anaphyla",
+   "exclude": "action plan|script|prescription|referral|epipen (script|renew)"
+  },
+  {
+   "id": "mental_health_crisis",
+   "label": "Suicide / self-harm risk",
+   "pattern": "suicid|kill(ing)? (my|him|her|them)sel(f|ves)|\\bend (it|it all|my life|(his|her|their) life)\\b|ending my life|(want|wants|wanting) to die|don'?t want to (live|be alive|be here)|self[- ]?harm|hurt(ing)? (my|him|her)self|no reason to live|no point (in )?living|better off (dead|without me)",
+   "exclude": ""
+  },
+  {
+   "id": "overdose_poisoning",
+   "label": "Overdose / poisoning",
+   "pattern": "overdose|took (all|too many|a lot of|lots of|\\d{2,}|a whole|the whole|an entire|the entire) .{0,25}(tablets|pills|panadol|meds|medication|packet|bottle)|swallowed .{0,20}(pills|tablets|bleach|chemicals|battery|batteries)|poison",
+   "exclude": ""
+  },
+  {
+   "id": "unconscious",
+   "label": "Collapse / unconscious",
+   "pattern": "unconscious|unresponsive|not responding|won'?t wake|can'?t wake|hard to wake|very drowsy|collapsed|passed out|blacked out|fainted.{0,40}(confus|vomit|hit (his|her|my) head|won'?t)|floppy|\\blimp\\b",
+   "exclude": ""
+  },
+  {
+   "id": "bleeding",
+   "label": "Severe bleeding",
+   "pattern": "bleeding.{0,30}(won'?t|will not|wont|doesn'?t|does not) stop|(won'?t|will not) stop bleeding|bleeding (through|heavily)|heavy bleeding|soaked (in|with) blood|lot of blood|coughing (up )?blood|vomiting blood|blood .{0,10}vomit",
+   "exclude": ""
+  },
+  {
+   "id": "seizure_active",
+   "label": "Seizure",
+   "pattern": "having a (seizure|fit)|seizure (now|right now|won'?t stop)|(is|he'?s|she'?s|they'?re) fitting|convuls|shaking all over|shaking uncontrollably",
+   "exclude": ""
+  },
+  {
+   "id": "seizure_word",
+   "label": "Possible seizure",
+   "pattern": "seizure",
+   "exclude": "medication|meds|tablets|script|prescription|action plan|neurologist|referral"
+  },
+  {
+   "id": "infant",
+   "label": "Unwell baby",
+   "pattern": "(baby|newborn|infant).{0,40}(not breathing|isn'?t breathing|blue|floppy|limp|pale|won'?t feed|not feeding|fever|temp(erature)? of (3[89]|4\\d))",
+   "exclude": ""
+  }
+ ],
+ "response": {
+  "title": "Possible emergency - do not auto-reply",
+  "patient_advice": "If this is an emergency, call 000 now. For mental health crisis support call Lifeline on 13 11 14 (24/7).",
+  "staff_action": "Call the patient back immediately and alert the duty GP / nurse."
+ },
+ "version": "v3"
+}

@@ -1,0 +1,91 @@
+label	message
+book_appointment	hey can i get in to see a dr today?? anytime after 2
+book_appointment	need appt asap for my daughter she has had a cough for days
+book_appointment	hi is there any spots w dr nguyen next wk
+book_appointment	Good morning, I'd like to make a booking for a pap smear please
+book_appointment	can i come in for a quick check on my ear, it's been blocked
+book_appointment	Looking to see a GP about my sleep problems, earliest available?
+book_appointment	book me in for covid booster pls
+book_appointment	Hi there, my partner and I need back to back appointments Friday
+book_appointment	want to see someone re my knee, can do mornings only
+book_appointment	New to the area, can I register and see a doctor this week?
+change_appointment	cant come today sorry pls cancel
+change_appointment	hi can we move tmrw 9am to sometime next wk
+change_appointment	Running late and won't make my 11:30, can I rebook for later today?
+change_appointment	pls cancel my booking for thurs, car broke down
+change_appointment	Hi, I need to shift my appt with Dr Lee to the arvo
+change_appointment	can u reschedule my sons booster to next month
+change_appointment	Need to cancel - got called into work
+change_appointment	Can my 2pm on the 14th be changed to the 16th?
+change_appointment	cancel my appointment, feeling fine now
+change_appointment	I'd like to rebook the appointment I missed last week to a new date
+repeat_prescription	out of my bp meds, can dr send script
+repeat_prescription	hi need repeat of ventolin pls
+repeat_prescription	Can I get an e-script for my usual pills? I've got 2 days left
+repeat_prescription	need new presciption for the pill
+repeat_prescription	chemist says no repeats left on my sertraline
+repeat_prescription	Hi, could you please renew my Rx for levothyroxine
+repeat_prescription	pls send script to priceline for my statins
+repeat_prescription	is it possible to get my meds re-prescribed via telehealth
+repeat_prescription	ran out of insulin pens script
+repeat_prescription	my mum needs her heart tablets script renewed she is 82
+test_results	any news on my bloods from last tues?
+test_results	got sms results are in - are they ok
+test_results	hi did the scan results come back for my shoulder
+test_results	Could someone call me about my pathology results please
+test_results	waiting on biopsy results its been a week
+test_results	can u email me a copy of my blood work
+test_results	are my urine test results normal
+test_results	Hi, the specialist needs my latest bloods, could you forward them
+test_results	did dr look at my xray yet
+test_results	I'd like to know my cholesterol numbers from last week's test
+referral	need referal to skin specialist
+referral	can i get a new referral for my cardiologist its expired
+referral	hi pls send referral to physio, knee still sore
+referral	Could Dr Patel refer me to a psychologist?
+referral	need a ref letter for the orthopaedic surgeon
+referral	specialist wont see me without an updated referral
+referral	can i be referred for an mri on my back
+referral	Hi, I need my referral to the endo renewed for 12 months
+referral	pls refer my son to a speech pathologist
+referral	Need referral for breast screen
+medical_certificate	need a sick cert for work for monday and tuesday
+medical_certificate	can i get a med cert, boss wants one
+medical_certificate	hi i need a doctors certificate for uni absence
+medical_certificate	Could I please get a carers certificate, kids were sick
+medical_certificate	need cert to say i'm fit to go back to work
+medical_certificate	can I get a medical cert via telehealth? was sick yesterday
+medical_certificate	pls send med certificate for 3 days sick leave
+medical_certificate	Hi, my workplace requires a doctor's note for my absence
+medical_certificate	Need a certificate of capacity for workers comp
+medical_certificate	school wants a note from the dr for my son missing a week
+billing_medicare	do u bulk bill
+billing_medicare	how much is a consult without medicare
+billing_medicare	i think i was charged wrong for last visit
+billing_medicare	Can I get a receipt emailed for my Medicare claim?
+billing_medicare	whats the gap for a skin check
+billing_medicare	is telehealth free with medicare
+billing_medicare	need tax invoice for my appointment for my health fund
+billing_medicare	my medicare card number has changed
+billing_medicare	why did i get an invoice in the mail
+billing_medicare	Do you charge a fee if I cancel late?
+general_enquiry	what time do u close today
+general_enquiry	r u taking new patients
+general_enquiry	where can i park
+general_enquiry	Hi, do any of your doctors speak Punjabi?
+general_enquiry	open on anzac day?
+general_enquiry	how do i update my phone number
+general_enquiry	is there a lift to the clinic
+general_enquiry	do you do telehealth
+general_enquiry	can my old clinic send my records to you
+general_enquiry	Is there a pharmacy near the clinic?
+clinical_concern	ive had a sore throat 4 days should i be worried
+clinical_concern	my toddler has a temp of 38.2 and is a bit grumpy, what should i do
+clinical_concern	new meds making me feel sick in the stomach, is that normal
+clinical_concern	got a rash on my legs since yesterday, itchy
+clinical_concern	my bp at home was 150/95 today, what should i do
+clinical_concern	Is it ok to drink alcohol with the antibiotics I was prescribed?
+clinical_concern	missed 2 days of my pill, am I still protected?
+clinical_concern	stitches look a bit red and sore around the edges
+clinical_concern	I have had a headache on and off all week
+clinical_concern	my sugars have been high all week even with meds

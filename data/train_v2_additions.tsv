@@ -1,0 +1,136 @@
+label	message
+book_appointment	hi any appts left this arvo
+book_appointment	can i see a gp tmrw morning pls
+book_appointment	need to come in re my migraines, whens the next spot
+book_appointment	book my 2 kids in for check ups sat if poss
+book_appointment	want an appt for a script review and bp check
+book_appointment	any doctors free after school pick up today
+book_appointment	can i get in this wk for a pregnancy test
+book_appointment	need to see a doc about my wrist, hurt it at netball
+book_appointment	hey just moved here, want to book a first visit
+book_appointment	can I book a double appointment for me and my husband
+book_appointment	need a telehealth with any gp today
+book_appointment	booking request: skin check with dr lee pls
+book_appointment	could i grab the first slot monday
+book_appointment	can someone see my son for his ear infection soon
+book_appointment	appt for 4 month old vaccines please
+change_appointment	pls move my appt to next tues
+change_appointment	need to cancel tomorrows booking, sorry
+change_appointment	cant make it today, can i rebook for fri
+change_appointment	running 30 min late, can i still come or move it
+change_appointment	cancel 10.15 with dr patel thx
+change_appointment	hi can my appointment be later in the day, stuck at work
+change_appointment	something came up, need to postpone my check up
+change_appointment	can u change my booking to a phone consult instead
+change_appointment	please cancel my daughters appt she is at school camp
+change_appointment	i missed my appt this morning can i book again
+change_appointment	switch my thurs appt to the same time next wk pls
+change_appointment	cancel booking for flu shot, already had it at chemist
+change_appointment	need to bring my appointment forward to tomorrow
+change_appointment	away next week so cancel my review
+change_appointment	can i swap doctors for my appt on wed
+repeat_prescription	need my bp script pls running low
+repeat_prescription	can dr send escript for my puffer
+repeat_prescription	out of repeats for my contraceptive pill
+repeat_prescription	pls renew my rx for my thyroid tabs
+repeat_prescription	chemist needs a new script for my antidepressants
+repeat_prescription	can i get scripts for my regular meds without an appt
+repeat_prescription	my insulin script has run out
+repeat_prescription	hi pls send repeat scripts to my phone
+repeat_prescription	need another script for my reflux meds before the weekend
+repeat_prescription	could i get my cholesterol meds prescribed again
+repeat_prescription	my mums blood thinner prescription needs renewing
+repeat_prescription	can you send a prescription for my usual pain relief
+repeat_prescription	need refill of my eczema cream script
+repeat_prescription	pharmacy said doctor must reissue my script
+repeat_prescription	escript for metformin please, 1 week left
+test_results	r my bloods back yet
+test_results	any update on my ultrasound
+test_results	did my pathology come back ok
+test_results	got a msg saying my results are ready
+test_results	pls call me about my xray
+test_results	whens my biopsy result due
+test_results	could you send my blood test results to my email
+test_results	has the gp looked at my urine sample results
+test_results	is my iron level normal from last weeks test
+test_results	hi checking on my scan results from monday
+test_results	need copy of my results for my specialist
+test_results	did my swab test results come in
+test_results	results from my mri back yet
+test_results	can the doctor ring me with my cholesterol result
+test_results	still havent heard about my blood test
+referral	need a referal for the physio
+referral	can my gp refer me to someone about my acne
+referral	my specialist referral ran out, need a new one
+referral	pls refer me to a psychologist, have mental health plan
+referral	need ref to the heart specialist
+referral	can the gp refer me for a scan of my knee
+referral	my hip surgeon needs a fresh letter from the gp
+referral	referral for a dietitian please
+referral	can u fax a referral to the eye clinic
+referral	need my son referred to the paediatrician
+referral	referral needed for hearing test
+referral	can i get referred to a dermo for my moles
+referral	please renew my referral to the rheumatologist
+referral	need a referral for podiatry under my care plan
+referral	referral to womens health specialist please
+medical_certificate	need a med cert for yesterday
+medical_certificate	can i get a sick note, was home with flu
+medical_certificate	pls send a certificate for work for 2 days
+medical_certificate	need carers cert, looked after my mum
+medical_certificate	uni needs a med cert for special consideration
+medical_certificate	boss wants a doctors note before i return
+medical_certificate	can i get a return to work clearance
+medical_certificate	need certificate to show im fit for duties
+medical_certificate	can the doctor write a note for school
+medical_certificate	workcover form needs to be filled by doctor
+medical_certificate	need a med cert for missing my exam
+medical_certificate	can i get a sick cert over the phone
+medical_certificate	certificate for 3 days off work please
+medical_certificate	need a letter from the dr for my employer
+medical_certificate	cert for time off as i had gastro
+billing_medicare	is it free for students or do i pay
+billing_medicare	whats the cost for a standard visit
+billing_medicare	i was double charged on my card
+billing_medicare	need a receipt for medicare
+billing_medicare	is there a fee for telehealth
+billing_medicare	my rebate hasnt come through
+billing_medicare	how much out of pocket for a long appt
+billing_medicare	new medicare card, pls update
+billing_medicare	can i pay my bill online
+billing_medicare	are kids bulk billed
+billing_medicare	my insurer wants an itemised account of my visit
+billing_medicare	why was i charged this time
+billing_medicare	how much if i dont have medicare
+billing_medicare	is there a no show fee
+billing_medicare	can i claim the gap on private health
+general_enquiry	what time do you open tmrw
+general_enquiry	are u open sunday
+general_enquiry	can my family join your practice
+general_enquiry	wheres the closest parking
+general_enquiry	whats your address
+general_enquiry	is there a doctor who speaks tamil
+general_enquiry	do you do home visits
+general_enquiry	how do i change my email on file
+general_enquiry	is the clinic accessible for a pram
+general_enquiry	can i get my records transferred here
+general_enquiry	do you have online booking
+general_enquiry	who is working saturday
+general_enquiry	do you have a nurse on site
+general_enquiry	is there a chemist downstairs
+general_enquiry	are you open on christmas day
+clinical_concern	had a sore throat for a few days, is it worth coming in
+clinical_concern	my kid has a temp of 38, still eating and playing
+clinical_concern	feeling nauseous since starting the new tablets
+clinical_concern	bumps on my skin after gardening, bit itchy
+clinical_concern	home bp reading was high again today
+clinical_concern	can i have a drink on these antibiotics
+clinical_concern	missed a pill yesterday what should i do
+clinical_concern	the cut on my finger is healing slowly
+clinical_concern	headaches most days this week
+clinical_concern	sugar levels high all week
+clinical_concern	cough wont go away after a week
+clinical_concern	dizzy when i stand up since new meds
+clinical_concern	tummy pain on and off for 2 days, no fever
+clinical_concern	is it normal to feel tired after the vaccine
+clinical_concern	my ankle is still swollen after rolling it

@@ -1,0 +1,28 @@
+label	message
+book_appointment	is dr patel free any time thursday? need to talk about my hayfever
+book_appointment	Could I schedule a check up for my 6 year old before school starts
+book_appointment	can i get a same day appt, any doctor is fine
+change_appointment	something's come up, can I do Wednesday instead of Tuesday?
+change_appointment	Please remove my booking on the 21st, I'm interstate
+change_appointment	can you push my 4.30 to 5 or later
+repeat_prescription	my anxiety meds are nearly finished, need another script
+repeat_prescription	Could you issue a fresh prescription for my mum's arthritis tablets
+repeat_prescription	need my epipen script redone, the old one expired
+test_results	Has anything come back from the stool sample I dropped off?
+test_results	can I see my liver function numbers from the bloods
+test_results	mammogram was last friday, has the clinic received the report
+referral	I'd like to see an ENT, can the doctor organise that
+referral	need paperwork to see the hand surgeon again
+referral	Could I be sent to a counsellor through the clinic
+medical_certificate	missed two shifts with a migraine, work wants proof
+medical_certificate	Need something in writing for my sports club that I'm cleared to play
+medical_certificate	could I get documentation for my absence from TAFE last week
+billing_medicare	How much will it cost me if I see the nurse only
+billing_medicare	The card payment failed at reception, can I pay now
+billing_medicare	do pensioners have to pay anything
+general_enquiry	Do you have evening hours during the week?
+general_enquiry	Which bus stops near your practice?
+general_enquiry	Can I email documents to the clinic, what's the address
+clinical_concern	my 3 year old has been coughing at night but is fine during the day
+clinical_concern	Since the vaccine my arm is sore and a bit hot, is that expected?
+clinical_concern	I keep getting heartburn after dinner lately, anything I can take?
